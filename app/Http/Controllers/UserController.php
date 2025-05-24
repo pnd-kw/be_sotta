@@ -60,12 +60,12 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $authUser = Auth::user();
+        // $authUser = Auth::user();
 
         // Only superadmin who can view all users
-        if ($authUser->role->name !== 'superadmin') {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if ($authUser->role->name !== 'superadmin') {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
 
         $users = User::with('role')->get();
 
