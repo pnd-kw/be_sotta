@@ -9,6 +9,32 @@ use Illuminate\Support\Facades\Storage;
 
 class CustomerReviewController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = CustomerReview::query();
+
+        if ($request->has('search')) {
+            $keyword = $request->input('search');
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', "$keyword")
+                  ->orWhere('message', 'like', "$keyword")
+                  ->orWhere('instansi', 'like', "$keyword");
+            });
+        }
+
+        $perPage = $request->input('per_page', 8);
+
+        $review = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+        return response()->json($review, 200);
+    }
+
+    public function show($id)
+    {
+        $review = CustomerReview::findOrFail($id);
+        return response()->json($review, 200);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

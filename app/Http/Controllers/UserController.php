@@ -66,10 +66,25 @@ class UserController extends Controller
         // if ($authUser->role->name !== 'superadmin') {
         //     return response()->json(['error' => 'Unauthorized'], 403);
         // }
+        $query = User::with('role');
 
-        $users = User::with('role')->get();
+        if ($keyword = $request->input('search')) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', "%$keyword%")
+                    ->orWhere('email', 'like', "%$keyword%");
+            });
+        }
 
-        return response()->json($users->makeHidden(['password', 'remember_token']));
+        $perPage = $request->input('per_page', 10);
+        $users = $query->paginate($perPage)->appends($request->all());
+
+        $users->getCollection()->makeHidden(['password', 'remember_token']);
+
+        return response()->json($users);
+
+        // $users = User::with('role')->get();
+
+        // return response()->json($users->makeHidden(['password', 'remember_token']));
     }
 
     public function show($id_user)
