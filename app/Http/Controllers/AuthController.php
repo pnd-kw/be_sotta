@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -19,11 +20,24 @@ class AuthController extends Controller
         // ]);
         $validated = $request->validated();
 
+        if ($request->hasFile('avatar')) {
+            $uploadedFile = $request->file('avatar');
+            $uploadedAvatar = Cloudinary::uploadApi()->upload($uploadedFile->getRealPath(), [
+                'folder' => 'avatars'
+            ]);
+            $validated['avatar'] = $uploadedAvatar['secure_url'];
+            $validated['cloudinary_public_id'] = $uploadedAvatar['public_id'];
+        }
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
             'role_id' => $validated['role_id'],
+            'gender' => $validated['gender'],
+            'avatar' => $validated['avatar'] ?? null,
+            'cloudinary_public_id' => $validated['cloudinary_public_id'] ?? null,
+            'phone_number' => $validated['phone_number']
         ]);
 
         return response()->json(['message' => 'User registered successfully'], 201);
@@ -55,6 +69,9 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role_id' => $user->role_id,
                 'role_name' => $user->role->name ?? null,
+                'gender' => $user->gender,
+                'avatar' => $user->avatar,
+                'phone_number' => $user->phone_number,
             ],
         ]);
     }

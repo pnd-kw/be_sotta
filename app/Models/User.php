@@ -15,6 +15,11 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    public const GENDER_OPTIONS = [
+        'male' => 'Laki-laki',
+        'female' => 'Perempuan',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,6 +31,10 @@ class User extends Authenticatable
         'password',
         'id_user',
         'role_id',
+        'avatar',
+        'cloudinary_public_id',
+        'gender',
+        'phone_number',
     ];
 
     /**

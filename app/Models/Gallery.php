@@ -16,7 +16,7 @@ class Gallery extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['name', 'published', 'imageUrl', 'alt', 'caption', 'tags', 'mimeType', 'size', 'createdBy', 'updatedBy'];
+    protected $fillable = ['name', 'published', 'imageUrl', 'public_id', 'alt', 'caption', 'tags', 'mimeType', 'size', 'createdBy', 'updatedBy'];
 
     protected $casts = [
         'tags' => 'array',

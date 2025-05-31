@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->softDeletes();
+            $table->boolean('gender')->default(true)->after('email_verified_at');
+            $table->string('avatar')->nullable()->after('gender');
+            $table->string('phone_number')->after('avatar');
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropSoftDeletes();
+            $table->dropColumn(['gender', 'avatar', 'phone_number']);
         });
     }
 };

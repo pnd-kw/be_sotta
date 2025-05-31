@@ -55,6 +55,9 @@ class UpdateUserRequest extends FormRequest
                     }
                 },
             ],
+            'gender' => 'sometimes|in:male,female',
+            'avatar' => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
+            'phone_number' => 'sometimes|string|max:20',
         ];
     }
 }

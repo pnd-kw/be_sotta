@@ -13,10 +13,12 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::insert([
-            ['name' => 'superadmin', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'admin', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'guest', 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        if (Role::count() === 0) {
+            Role::insert([
+                ['name' => 'superadmin', 'created_at' => now(), 'updated_at' => now()],
+                ['name' => 'admin', 'created_at' => now(), 'updated_at' => now()],
+                ['name' => 'guest', 'created_at' => now(), 'updated_at' => now()],
+            ]);
+        }
     }
 }
