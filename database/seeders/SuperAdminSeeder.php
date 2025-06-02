@@ -22,7 +22,7 @@ class SuperAdminSeeder extends Seeder
             User::create([
                 'name' => 'Sotta Art',
                 'email' => 'sottaart@gmail.com',
-                'password' => Hash::make('rahasia'),
+                'password' => Hash::make(env('SUPERADMIN_PASSWORD', 'defaultpassword')),
                 'gender' => true,
                 'avatar' => null,
                 'phone_number' => '08175457300',

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: be_sotta
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://be-sotta.onrender.com
+
