@@ -39,6 +39,8 @@ class GalleryController extends Controller
 
     public function store(Request $request)
     {
+        Log::info('Gallery Store Request', $request->all());
+
         $validated = $request->validate([
             'name' => 'required|string',
             'published' => 'required|boolean',
