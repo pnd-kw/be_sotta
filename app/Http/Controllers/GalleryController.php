@@ -41,6 +41,18 @@ class GalleryController extends Controller
     {
         Log::info('Gallery Store Request', $request->all());
 
+        try {
+            error_log('== POST /api/gallery ==');
+            error_log(json_encode($request->all()));
+
+            // Lanjut validasi atau logika simpan
+
+            return response()->json(['message' => 'Success']);
+        } catch (\Throwable $e) {
+            error_log('ERROR in /api/gallery: ' . $e->getMessage());
+            return response()->json(['message' => 'Internal server error'], 500);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string',
             'published' => 'required|boolean',
