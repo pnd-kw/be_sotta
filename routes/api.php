@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('check.role:admin,superadmin')->group(function () {
         Route::post('/gallery', [GalleryController::class, 'store']);
         Route::patch('/gallery/{id}', [GalleryController::class, 'update']);
+        Route::patch('/gallery/{id}/published', [GalleryController::class, 'updatePublished']);
         Route::delete('/gallery/{id}', [GalleryController::class, 'delete']);
     });
 });

@@ -147,6 +147,23 @@ class GalleryController extends Controller
         return response()->json($gallery, 200);
     }
 
+    public function updatePublished(Request $request, $id)
+    {
+        $request->validate([
+            'published' => 'required|boolean',
+            'updatedBy' => 'required|string',
+        ]);
+
+        $gallery = Gallery::findOrFail($id);
+
+        $gallery->update([
+            'published' => $request->published,
+            'updatedBy' => $request->updatedBy,
+        ]);
+
+        return response()->json($gallery);
+    }
+
     public function delete($id)
     {
         $gallery = Gallery::findOrFail($id);
