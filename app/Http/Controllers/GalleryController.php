@@ -105,7 +105,7 @@ class GalleryController extends Controller
             'tags' => 'sometimes|required|array',
             // 'mimeType' => 'sometimes|required|string',
             // 'size' => 'sometimes|required|integer',
-            'updatedBy' => 'required|string',
+            'updatedBy' => 'sometimes|required|string',
         ]);
 
         // if ($request->hasFile('imageUrl')) {
