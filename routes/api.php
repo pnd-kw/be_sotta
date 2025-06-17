@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CloudinaryController;
 use App\Http\Controllers\CustomerReviewController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\UserController;
@@ -24,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Route untuk delete user berdasarkan id_user
     Route::delete('user/{id_user}', [UserController::class, 'delete']);
+
+    // Route untuk get usage cloudinary
+    Route::get('/cloudinary/usage', [CloudinaryController::class, 'getCloudinaryUsage']);
 
     // Route untuk get data semua user
     Route::get('/users', [UserController::class, 'index']);

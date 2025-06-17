@@ -87,12 +87,11 @@ class GalleryController extends Controller
 
     public function update(Request $request, $id)
     {
-        Log::info('PATCH request received:', $request->all());
+        // Log::info('PATCH request received:', $request->all());
         // Log::info('Request method: ' . $request->method());
         // Log::info('Content-Type: ' . $request->header('Content-Type'));
         // Log::info('Raw content:', [$request->getContent()]);
         // Log::info('Request all:', $request->all());
-
         $gallery = Gallery::findOrFail($id);
 
         $validated = $request->validate([
@@ -105,7 +104,7 @@ class GalleryController extends Controller
             'tags' => 'sometimes|required|array',
             // 'mimeType' => 'sometimes|required|string',
             // 'size' => 'sometimes|required|integer',
-            'updatedBy' => 'sometimes|required|string',
+            'updatedBy' => 'required|string',
         ]);
 
         // if ($request->hasFile('imageUrl')) {
