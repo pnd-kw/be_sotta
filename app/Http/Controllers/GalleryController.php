@@ -165,18 +165,21 @@ class GalleryController extends Controller
 
     public function delete($id)
     {
-        $gallery = Gallery::findOrFail($id);
+        try {
+            $gallery = Gallery::findOrFail($id);
 
-        // if ($gallery->imageUrl && Storage::disk('public')->exists($gallery->imageUrl)) {
-        //     Storage::disk('public')->delete($gallery->imageUrl);
-        // }
+            if ($gallery->public_id) {
+                Cloudinary::destroy($gallery->public_id);
+            }
 
-        if ($gallery->public_id) {
-            Cloudinary::destroy($gallery->public_id);
+            $gallery->delete();
+
+            return response()->json(['message' => 'Gallery item deleted successfully.'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete gallery item.',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $gallery->delete();
-
-        return response()->json(['message' => 'Gallery item deleted successfully.'], 200);
     }
 }
