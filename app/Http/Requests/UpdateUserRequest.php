@@ -36,7 +36,7 @@ class UpdateUserRequest extends FormRequest
             'email' => [
                 'sometimes',
                 'email',
-                Rule::unique('users', 'email')->ignore($this->user),
+                Rule::unique('users', 'email')->ignore($this->route('id_user'), 'id_user'),
             ],
             'password' => 'sometimes|string|confirmed|min:6',
             'role_id' => [
@@ -47,7 +47,7 @@ class UpdateUserRequest extends FormRequest
                     if (!$superadminRole || $value != $superadminRole->id) return;
 
                     $existingSuperadmin = User::where('role_id', $superadminRole->id)
-                        ->where('id', '!=', $this->user->id)
+                        ->where('id_user', '!=', $this->route('id_user'))
                         ->first();
 
                     if ($existingSuperadmin) {
