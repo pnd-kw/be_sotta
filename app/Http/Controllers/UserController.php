@@ -31,8 +31,11 @@ class UserController extends Controller
 
         $validated = $request->validated();
 
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
+        // Tangani password hanya jika dikirim dan tidak kosong
+        if ($request->filled('password')) {
+            $validated['password'] = Hash::make($request->input('password'));
+        } else {
+            unset($validated['password']);
         }
 
         // Upload avatar jika ada file baru
