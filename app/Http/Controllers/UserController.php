@@ -67,7 +67,7 @@ class UserController extends Controller
         }
 
         if ($user->cloudinary_public_id) {
-            Cloudinary::destroy($user->cloudinary_public_id);
+            Cloudinary::uploadApi()->destroy($user->cloudinary_public_id);
         }
 
         $user->delete();
