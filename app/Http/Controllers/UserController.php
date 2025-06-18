@@ -161,8 +161,8 @@ class UserController extends Controller
             // 'role_id' => $user->role_id,
             // 'role_name' => $user->role->name ?? null,
             'role' => [
-                'key' => $user->role_id,
-                'value' => $user->role->name ?? null,
+                'id' => $user->role_id,
+                'name' => $user->role->name ?? null,
             ],
             'gender' => ['key' => $user->gender, 'value' => User::GENDER_OPTIONS[$user->gender] ?? null],
             'avatar' => $user->avatar,
