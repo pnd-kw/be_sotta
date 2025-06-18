@@ -87,12 +87,11 @@ class GalleryController extends Controller
 
     public function update(Request $request, $id)
     {
-        Log::info('PATCH request received:', $request->all());
+        // Log::info('PATCH request received:', $request->all());
         // Log::info('Request method: ' . $request->method());
         // Log::info('Content-Type: ' . $request->header('Content-Type'));
         // Log::info('Raw content:', [$request->getContent()]);
         // Log::info('Request all:', $request->all());
-
         $gallery = Gallery::findOrFail($id);
 
         $validated = $request->validate([
@@ -147,20 +146,59 @@ class GalleryController extends Controller
         return response()->json($gallery, 200);
     }
 
+    public function updatePublished(Request $request, $id)
+    {
+        $request->validate([
+            'published' => 'required|boolean',
+            'updatedBy' => 'required|string',
+        ]);
+
+        $gallery = Gallery::findOrFail($id);
+
+        $gallery->update([
+            'published' => $request->published,
+            'updatedBy' => $request->updatedBy,
+        ]);
+
+        return response()->json($gallery);
+    }
+
     public function delete($id)
     {
         $gallery = Gallery::findOrFail($id);
 
-        // if ($gallery->imageUrl && Storage::disk('public')->exists($gallery->imageUrl)) {
-        //     Storage::disk('public')->delete($gallery->imageUrl);
-        // }
-
         if ($gallery->public_id) {
-            Cloudinary::destroy($gallery->public_id);
+            Cloudinary::uploadApi()->destroy($gallery->public_id);
         }
 
         $gallery->delete();
 
         return response()->json(['message' => 'Gallery item deleted successfully.'], 200);
     }
+
+    // public function delete($id)
+    // {
+    //     try {
+    //         $gallery = Gallery::findOrFail($id);
+
+    //         if ($gallery->public_id) {
+    //             Cloudinary::destroy($gallery->public_id);
+    //         }
+
+    //         $gallery->delete();
+
+    //         return response()->json(['message' => 'Gallery item deleted successfully.'], 200);
+    //     } catch (\Exception $e) {
+    //         // log error ke laravel.log
+    //         Log::error('Delete gallery failed', [
+    //             'id' => $id,
+    //             'error' => $e->getMessage(),
+    //         ]);
+
+    //         return response()->json([
+    //             'message' => 'Failed to delete gallery item.',
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
 }
