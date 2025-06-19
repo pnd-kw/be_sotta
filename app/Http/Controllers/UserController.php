@@ -31,8 +31,11 @@ class UserController extends Controller
 
         $validated = $request->validated();
 
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
+        // Tangani password hanya jika dikirim dan tidak kosong
+        if ($request->filled('password')) {
+            $validated['password'] = Hash::make($request->input('password'));
+        } else {
+            unset($validated['password']);
         }
 
         // Upload avatar jika ada file baru
@@ -67,7 +70,7 @@ class UserController extends Controller
         }
 
         if ($user->cloudinary_public_id) {
-            Cloudinary::destroy($user->cloudinary_public_id);
+            Cloudinary::uploadApi()->destroy($user->cloudinary_public_id);
         }
 
         $user->delete();
@@ -161,8 +164,8 @@ class UserController extends Controller
             // 'role_id' => $user->role_id,
             // 'role_name' => $user->role->name ?? null,
             'role' => [
-                'key' => $user->role_id,
-                'value' => $user->role->name ?? null,
+                'id' => $user->role_id,
+                'name' => $user->role->name ?? null,
             ],
             'gender' => ['key' => $user->gender, 'value' => User::GENDER_OPTIONS[$user->gender] ?? null],
             'avatar' => $user->avatar,
