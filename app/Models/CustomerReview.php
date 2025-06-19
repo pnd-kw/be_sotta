@@ -13,7 +13,7 @@ class CustomerReview extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['id', 'name', 'message', 'instansi', 'avatar'];
+    protected $fillable = ['id', 'name', 'message', 'instansi', 'gender', 'avatar', 'token', 'token_expires_at'];
 
     protected static function boot()
     {

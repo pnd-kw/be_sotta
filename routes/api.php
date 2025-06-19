@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/{id_user}', [UserController::class, 'show']);
 
     // Hanya superadmin bisa delete review
-    Route::delete('/customer-review/{id}', [CustomerReviewController::class, 'destroy'])
+    Route::delete('/customer-reviews/{id}', [CustomerReviewController::class, 'destroy'])
         ->middleware('check.role:superadmin');
 
     // Route post, update, dan delete gallery hanya bisa superadmin dan admin
@@ -48,11 +48,15 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-// Route post customer review
-Route::post('/customer-reviews', [CustomerReviewController::class, 'store']);
-
 // Route get all gallery
 Route::get('/gallery', [GalleryController::class, 'index']);
 
 // Route get gallery by id
 Route::get('/gallery/{id}', [GalleryController::class, 'show']);
+
+// === Public Customer Review Routes ===
+Route::get('/customer-reviews', [CustomerReviewController::class, 'index']);
+Route::get('/customer-reviews/{id}', [CustomerReviewController::class, 'show']);
+Route::post('/customer-reviews', [CustomerReviewController::class, 'store']);
+Route::post('/customer-reviews/{id}', [CustomerReviewController::class, 'update']);
+Route::delete('/customer-reviews/{id}', [CustomerReviewController::class, 'destroy']); 
