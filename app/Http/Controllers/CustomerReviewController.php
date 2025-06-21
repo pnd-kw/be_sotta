@@ -27,7 +27,7 @@ class CustomerReviewController extends Controller
             });
         }
 
-        $perPage = $request->input('per_page', 8);
+        $perPage = $request->input('per_page', 10);
         $reviews = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
         $reviews->getCollection()->transform(function ($review) use ($userToken, $authUser) {
