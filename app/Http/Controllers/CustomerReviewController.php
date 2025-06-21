@@ -79,7 +79,7 @@ class CustomerReviewController extends Controller
             'name' => 'required|string',
             'message' => 'required|string',
             'instansi' => 'required|string',
-            'gender' => 'required|string|in:laki-laki,perempuan',
+            'gender' => 'required|string|in:male,female',
             'token' => 'required|string',
             'avatar' => 'nullable|image|max:2048',
         ]);
