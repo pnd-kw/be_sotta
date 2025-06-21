@@ -13,17 +13,15 @@ class CustomerReviewController extends Controller
     public function index(Request $request)
     {
         $userToken = $request->input('token');
-        $authUser = Auth::user();              
+        $authUser = Auth::user();
 
         $query = CustomerReview::query();
 
-        // Optional search
-        if ($request->has('search')) {
-            $keyword = $request->input('search');
+        if ($keyword = $request->input('search')) {
             $query->where(function ($q) use ($keyword) {
-                $q->where('name', 'like', "$keyword")
-                    ->orWhere('message', 'like', "$keyword")
-                    ->orWhere('instansi', 'like', "$keyword");
+                $q->where('name', 'like', "%$keyword%")
+                    ->orWhere('message', 'like', "%$keyword%")
+                    ->orWhere('instansi', 'like', "%$keyword%");
             });
         }
 
@@ -42,8 +40,8 @@ class CustomerReviewController extends Controller
                 'gender' => $review->gender,
                 'avatar' => $review->avatar,
                 'created_at' => $review->created_at,
-                'can_edit' => $isOwner,              
-                'can_delete' => $isOwner || $isSuperadmin, 
+                'can_edit' => $isOwner,
+                'can_delete' => $isOwner || $isSuperadmin,
             ];
         });
 
