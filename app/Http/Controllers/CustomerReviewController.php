@@ -39,6 +39,7 @@ class CustomerReviewController extends Controller
                 'instansi' => $review->instansi,
                 'gender' => $review->gender,
                 'avatar' => $review->avatar,
+                'token' => $review->token,
                 'created_at' => $review->created_at,
                 'can_edit' => $isOwner,
                 'can_delete' => $isOwner || $isSuperadmin,
