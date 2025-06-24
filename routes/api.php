@@ -58,5 +58,5 @@ Route::get('/gallery/{id}', [GalleryController::class, 'show']);
 Route::get('/customer-reviews', [CustomerReviewController::class, 'index']);
 Route::get('/customer-reviews/{id}', [CustomerReviewController::class, 'show']);
 Route::post('/customer-reviews', [CustomerReviewController::class, 'store']);
-Route::post('/customer-reviews/{id}', [CustomerReviewController::class, 'update']);
+Route::patch('/customer-reviews/{id}', [CustomerReviewController::class, 'update']);
 Route::delete('/customer-reviews/{id}', [CustomerReviewController::class, 'destroy']); 
