@@ -21,6 +21,11 @@ class GalleryController extends Controller
             });
         }
 
+        if ($request->has('published')) {
+            $published = filter_var($request->input('published'), FILTER_VALIDATE_BOOLEAN);
+            $query->where('published', $published);
+        }
+
         $perPage = $request->input('per_page', 8);
 
         $galleries = $query->orderBy('created_at', 'desc')->paginate($perPage);
@@ -134,5 +139,4 @@ class GalleryController extends Controller
 
         return response()->json(['message' => 'Gallery item deleted successfully.'], 200);
     }
-
 }
