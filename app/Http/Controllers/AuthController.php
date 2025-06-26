@@ -13,11 +13,6 @@ class AuthController extends Controller
 {
     public function register(StoreUserRequest $request)
     {
-        // $validated = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|email|unique:users',
-        //     'password' => 'required|string|min:6|confirmed',
-        // ]);
         $validated = $request->validated();
 
         if ($request->hasFile('avatar')) {

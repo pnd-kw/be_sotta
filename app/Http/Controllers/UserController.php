@@ -13,7 +13,6 @@ class UserController extends Controller
 {
     public function update(UpdateUserRequest $request, $id_user)
     {
-        // $user = User::where('id_user', $id_user)->firstOrFail();
 
         /** @var \App\Models\User|null $user  */
         $authUser = Auth::user();
@@ -22,12 +21,6 @@ class UserController extends Controller
         if ($authUser->role->name !== 'superadmin' && $authUser->id_user !== $user->id_user) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-
-        // $validated = $request->validate([
-        //     'name' => 'sometimes|string|max:255',
-        //     'email' => 'sometimes|email|unique:users,email,' . $user->id,
-        //     'password' => 'sometimes|string|min:6|confirmed',
-        // ]);
 
         $validated = $request->validated();
 
@@ -80,12 +73,6 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        // $authUser = Auth::user();
-
-        // Only superadmin who can view all users
-        // if ($authUser->role->name !== 'superadmin') {
-        //     return response()->json(['error' => 'Unauthorized'], 403);
-        // }
         $query = User::with('role');
 
         if ($keyword = $request->input('search')) {
@@ -99,25 +86,6 @@ class UserController extends Controller
         $users = $query->paginate($perPage)->appends($request->all());
 
         $users->getCollection()->transform(function ($user) {
-            // $user->makeHidden(['password', 'remember_token']);
-
-            // $user->gender = [
-            //     'key' => $user->gender,
-            //     'value' => User::GENDER_OPTIONS[$user->gender] ?? null,
-            // ];
-
-            // // $user->role = [
-            // //     'key' => $user->role_id,
-            // //     'value' => $user->role->name ?? null,
-            // // ];
-            // if ($user->role) {
-            //     $user->role = [
-            //         'id' => $user->role->id,
-            //         'name' => $user->role->name,
-            //     ];
-            // }
-
-            // return $user;
             return [
                 'id' => $user->id,
                 'id_user' => $user->id_user,
@@ -131,7 +99,6 @@ class UserController extends Controller
                 'created_at' => $user->created_at,
                 'updated_at' => $user->updated_at,
                 'deleted_at' => $user->deleted_at,
-                // 'role_id' => $user->role_id,
                 'role' => [
                     'id' => $user->role->id ?? null,
                     'name' => $user->role->name ?? null
@@ -141,10 +108,6 @@ class UserController extends Controller
         });
 
         return response()->json($users);
-
-        // $users = User::with('role')->get();
-
-        // return response()->json($users->makeHidden(['password', 'remember_token']));
     }
 
     public function show($id_user)
@@ -161,8 +124,6 @@ class UserController extends Controller
             'id_user' => $user->id_user,
             'name' => $user->name,
             'email' => $user->email,
-            // 'role_id' => $user->role_id,
-            // 'role_name' => $user->role->name ?? null,
             'role' => [
                 'id' => $user->role_id,
                 'name' => $user->role->name ?? null,
