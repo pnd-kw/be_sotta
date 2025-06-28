@@ -10,20 +10,27 @@ class GalleryController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Gallery::query();
+        $query = Gallery::with('category');
 
         if ($request->has('search')) {
             $keyword = $request->input('search');
             $query->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', "%$keyword%")
                     ->orWhere('caption', 'like', "%$keyword%")
-                    ->orWhere('alt', 'like', "%$keyword%");
+                    ->orWhere('alt', 'like', "%$keyword%")
+                    ->orWhereHas('category', function ($cat) use ($keyword) {
+                        $cat->where('name', 'like', "%$keyword%");
+                    });
             });
         }
 
         if ($request->has('published')) {
             $published = filter_var($request->input('published'), FILTER_VALIDATE_BOOLEAN);
             $query->where('published', $published);
+        }
+
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->input('category_id'));
         }
 
         $perPage = $request->input('per_page', 8);
@@ -35,7 +42,7 @@ class GalleryController extends Controller
 
     public function show($id)
     {
-        $gallery = Gallery::findOrFail($id);
+        $gallery = Gallery::with('category')->findOrFail($id);
         return response()->json($gallery, 200);
     }
 
@@ -48,6 +55,7 @@ class GalleryController extends Controller
             'alt' => 'required|string',
             'caption' => 'required|string',
             'tags' => 'required|array',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         $uploadedFile = $request->file('image');
@@ -65,6 +73,7 @@ class GalleryController extends Controller
             'alt' => $request->input('alt'),
             'caption' => $request->input('caption'),
             'tags' => $request->input('tags'),
+            'category_id' => $request->input('category_id'),
             'published' => filter_var($request->input('published'), FILTER_VALIDATE_BOOLEAN),
             'createdBy' => $request->input('createdBy'),
             'updatedBy' => $request->input('updatedBy'),
@@ -84,6 +93,7 @@ class GalleryController extends Controller
             'alt' => 'sometimes|required|string',
             'caption' => 'sometimes|required|string',
             'tags' => 'sometimes|required|array',
+            'category_id' => 'sometimes|nullable|exists:categories,id',
             'updatedBy' => 'required|string',
         ]);
 

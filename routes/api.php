@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CloudinaryController;
 use App\Http\Controllers\CustomerReviewController;
 use App\Http\Controllers\GalleryController;
@@ -30,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cloudinary/usage', [CloudinaryController::class, 'getCloudinaryUsage']);
 
     // Route untuk get data semua user
-    Route::get('/users', [UserController::class, 'index']);
+    // Route::get('/users', [UserController::class, 'index']);
 
     // Route untuk get data user by id_user
     Route::get('/user/{id_user}', [UserController::class, 'show']);
@@ -46,6 +47,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/gallery/{id}/published', [GalleryController::class, 'updatePublished']);
         Route::delete('/gallery/{id}', [GalleryController::class, 'delete']);
     });
+
+    // Route post, update, delete hanya untuk superadmin dan admin
+    Route::middleware('check.role:admin,superadmin')->group(function () {
+        Route::post('/categories', [CategoryController::class, 'store']);
+        Route::patch('/categories/{id}', [CategoryController::class, 'update']);
+        Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+    });
 });
 
 // Route get all gallery
@@ -59,4 +67,8 @@ Route::get('/customer-reviews', [CustomerReviewController::class, 'index']);
 Route::get('/customer-reviews/{id}', [CustomerReviewController::class, 'show']);
 Route::post('/customer-reviews', [CustomerReviewController::class, 'store']);
 Route::patch('/customer-reviews/{id}', [CustomerReviewController::class, 'update']);
-Route::delete('/customer-reviews/{id}', [CustomerReviewController::class, 'destroy']); 
+Route::delete('/customer-reviews/{id}', [CustomerReviewController::class, 'destroy']);
+
+// Route get all dan get by id categories
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
