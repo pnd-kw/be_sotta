@@ -14,7 +14,7 @@ class Category extends Model
 
     public function galleries()
     {
-        return $this->hasMany(Gallery::class);
+        return $this->belongsToMany(Gallery::class, 'category_gallery');
     }
 
     public function parent()

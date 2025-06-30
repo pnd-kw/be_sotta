@@ -16,10 +16,12 @@ class Gallery extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['name', 'published', 'imageUrl', 'public_id', 'alt', 'caption', 'tags', 'mimeType', 'size', 'createdBy', 'updatedBy'];
+    // protected $fillable = ['name', 'published', 'imageUrl', 'public_id', 'alt', 'caption', 'tags', 'mimeType', 'size', 'createdBy', 'updatedBy'];
+    protected $fillable = ['name', 'published', 'images', 'thumbnailUrl', 'caption', 'tags', 'createdBy', 'updatedBy'];
 
     protected $casts = [
         'tags' => 'array',
+        'images' => 'array',
         'published' => 'boolean',
     ];
     
@@ -34,9 +36,9 @@ class Gallery extends Model
         });
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'category_gallery');
     }
 
 }
