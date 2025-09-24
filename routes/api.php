@@ -45,7 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/gallery', [GalleryController::class, 'store']);
         Route::patch('/gallery/{id}', [GalleryController::class, 'update']);
         Route::patch('/gallery/{id}/published', [GalleryController::class, 'updatePublished']);
-        Route::delete('/gallery/{gallery}/image/{public_id}', [GalleryController::class, 'deleteImage']);
+        // Route::delete('/gallery/{gallery}/image/{public_id}', [GalleryController::class, 'deleteImage']);
         Route::delete('/gallery/{id}', [GalleryController::class, 'delete']);
     });
 
